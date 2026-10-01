@@ -1,0 +1,316 @@
+/* ============================================================
+   app-shell.css
+   The layout after login: the overall app shell, the bottom tab bar on mobile, and the persistent 3-column layout on desktop.
+   ============================================================ */
+
+/* ---------- Post-auth app shell ---------- */
+#screen-feed.screen.active { padding: 0; }
+.app-shell { display: flex; flex: 1; width: 100%; min-height: 100%; }
+.app-content { flex: 1; display: flex; min-height: 100%; }
+.app-content-main { flex: 1; min-width: 0; padding: 28px 24px 100px; overflow-y: auto; }
+.app-right-rail { display: none; }
+.tab-panel { display: none; animation: fieldRise .35s cubic-bezier(.22,1,.36,1); }
+.tab-panel.active { display: block; }
+
+.sidebar { display: none; }
+
+.bottom-nav {
+  position: fixed;
+  left: 12px; right: 12px; bottom: 12px;
+  max-width: 456px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background: rgba(255,255,255,0.9);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(28,27,23,0.06);
+  border-radius: 22px;
+  padding: 8px 6px calc(6px + env(safe-area-inset-bottom));
+  box-shadow: 0 8px 28px rgba(28,27,23,0.12);
+  z-index: 40;
+}
+.bottom-nav-item {
+  display: flex; flex-direction: column; align-items: center; gap: 2px;
+  background: none; border: none; color: rgba(28,27,23,0.4);
+  padding: 5px 12px; border-radius: 12px; cursor: pointer;
+  transition: color .15s;
+}
+.bottom-nav-item svg { width: 22px; height: 22px; }
+.bottom-nav-item.active { color: var(--primary); }
+.bottom-nav-create {
+  background: var(--primary); color: #fff;
+  width: 46px; height: 46px; border-radius: 30%;
+  align-items: center; justify-content: center;
+  margin-top: -20px;
+  box-shadow: 0 4px 14px rgba(30,92,62,0.32), 0 0 0 5px rgba(30,92,62,0.12);
+  transition: transform .15s, background .15s, box-shadow .15s;
+  animation: createGlow 2.6s ease-in-out infinite;
+}
+.bottom-nav-create:hover { background: var(--primary-dark); transform: translateY(-1px) scale(1.05); }
+.bottom-nav-create.active { color: #fff; }
+@keyframes createGlow {
+  0%, 100% { box-shadow: 0 4px 14px rgba(30,92,62,0.32), 0 0 0 5px rgba(30,92,62,0.12); }
+  50% { box-shadow: 0 4px 18px rgba(30,92,62,0.4), 0 0 0 8px rgba(30,92,62,0.06); }
+}
+
+/* ---------- Floating create button (mobile) ---------- */
+.fab-create {
+  position: fixed; right: 18px; bottom: calc(76px + env(safe-area-inset-bottom));
+  width: 52px; height: 52px; border-radius: 30%;
+  background: var(--primary); color: #fff; border: none;
+  display: flex; align-items: center; justify-content: center; cursor: pointer;
+  box-shadow: 0 4px 14px rgba(30,92,62,0.32), 0 0 0 5px rgba(30,92,62,0.12);
+  transition: transform .25s ease, opacity .25s ease, background .15s;
+  z-index: 39;
+  animation: createGlow 2.6s ease-in-out infinite;
+}
+.fab-create:hover { background: var(--primary-dark); }
+.fab-create.fab-hidden { transform: translateY(90px) scale(0.85); opacity: 0; pointer-events: none; }
+.fab-create.fab-tab-hidden { opacity: 0; transform: translateY(90px) scale(0.85); pointer-events: none; }
+
+/* ---------- Mobile drawer toggle (hamburger) ---------- */
+.drawer-toggle {
+  position: fixed; left: 14px; top: calc(14px + env(safe-area-inset-top));
+  width: 40px; height: 40px; border-radius: 50%;
+  background: rgba(255,255,255,0.9); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(28,27,23,0.08); color: var(--ink);
+  display: flex; align-items: center; justify-content: center; cursor: pointer;
+  box-shadow: 0 4px 14px rgba(28,27,23,0.1);
+  z-index: 41;
+}
+
+/* ---------- Mobile drawer panel ---------- */
+.drawer-overlay {
+  position: fixed; inset: 0; background: rgba(20,24,22,0.4);
+  opacity: 0; pointer-events: none; transition: opacity .25s ease;
+  z-index: 49;
+}
+.drawer-overlay.open { opacity: 1; pointer-events: auto; }
+.drawer-panel {
+  position: fixed; top: 0; bottom: 0; left: 0; width: 78%; max-width: 300px;
+  background: #fff; box-shadow: 4px 0 24px rgba(28,27,23,0.16);
+  display: flex; flex-direction: column; gap: 2px;
+  padding: calc(20px + env(safe-area-inset-top)) 14px 20px;
+  transform: translateX(-100%); transition: transform .3s cubic-bezier(.22,1,.36,1);
+  z-index: 50;
+}
+.drawer-panel.open { transform: translateX(0); }
+.drawer-profile {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 10px 18px; margin-bottom: 8px; border-bottom: 1px solid var(--line);
+  cursor: pointer;
+}
+.drawer-profile-name { font-family: 'Sora', sans-serif; font-weight: 700; font-size: 15px; color: var(--ink); }
+.drawer-profile-username { font-size: 13px; color: rgba(28,27,23,0.55); }
+.drawer-link {
+  display: flex; align-items: center; gap: 13px;
+  padding: 12px 10px; border-radius: 12px;
+  border: none; background: none; text-align: left; cursor: pointer;
+  font-size: 15px; font-weight: 500; font-family: 'Inter', sans-serif; color: var(--ink);
+  transition: background .15s;
+}
+.drawer-link svg { flex-shrink: 0; }
+.drawer-link:hover, .drawer-link:active { background: rgba(30,92,62,0.06); }
+.drawer-link-danger { color: var(--accent-red); }
+.drawer-spacer { flex: 1; }
+
+@media (min-width: 768px) {
+  .fab-create, .drawer-toggle, .drawer-overlay, .drawer-panel { display: none; }
+}
+
+@media (min-width: 768px) {
+  #screen-feed.screen.active { padding: 0; }
+  .app-content-main { padding: 32px 40px 40px; max-width: 640px; margin: 0 auto; }
+  .bottom-nav { display: none; }
+  .sidebar {
+    display: flex; flex-direction: column;
+    width: 226px; flex-shrink: 0;
+    padding: 28px 16px;
+    border-right: 1px solid var(--line);
+    gap: 4px;
+    position: sticky; top: 0; height: 100vh;
+  }
+  .sidebar::before {
+    content: ""; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent-red));
+  }
+  .sidebar-brand {
+    font-family: 'Sora', sans-serif; font-weight: 800; font-size: 18px;
+    color: var(--ink); display: flex; align-items: center; gap: 10px;
+    margin-bottom: 28px; padding: 0 10px;
+    letter-spacing: -0.01em;
+  }
+  .sidebar-item {
+    display: flex; align-items: center; gap: 13px;
+    padding: 12px 14px; border-radius: 12px;
+    border: none; background: none;
+    font-size: 15px; font-weight: 500; font-family: 'Inter', sans-serif;
+    color: var(--ink); cursor: pointer; text-align: left;
+    transition: background .15s, color .15s;
+  }
+  .sidebar-item svg { width: 20px; height: 20px; flex-shrink: 0; }
+  .sidebar-item:hover { background: rgba(30,92,62,0.06); }
+  .sidebar-item.active { background: rgba(30,92,62,0.1); color: var(--primary); font-weight: 600; }
+  .sidebar-create { background: var(--primary); color: #fff; margin-top: 10px; }
+  .sidebar-create:hover { background: var(--primary-dark); color: #fff; }
+}
+
+/* Desktop — persistent right rail turns the feed into a real 3-column
+   dashboard instead of a wide single column. */
+@media (min-width: 1200px) {
+  .sidebar { width: 250px; }
+  .app-content-main { max-width: 820px; margin: 0; padding: 32px 32px 40px 40px; }
+
+  /* Editorial masonry feed — two staggered columns instead of one long
+     list, so the feed reads like a campus bulletin, not a cloned timeline. */
+  #feed-posts { column-count: 2; column-gap: 18px; }
+  #feed-posts .post-card { break-inside: avoid; display: inline-block; width: 100%; }
+  #feed-skeleton { column-count: 2; column-gap: 18px; }
+  #feed-skeleton .skeleton-card { break-inside: avoid; display: inline-block; width: 100%; }
+
+  .app-right-rail {
+    display: flex; flex-direction: column; gap: 16px;
+    width: 300px; flex-shrink: 0;
+    padding: 32px 32px 40px 0;
+    position: sticky; top: 0; height: 100vh; overflow-y: auto;
+  }
+  .rail-card { background: var(--surface); border-radius: 4px 16px 16px 16px; padding: 16px; box-shadow: var(--shadow); }
+  .rail-profile-card { display: flex; align-items: center; gap: 10px; background: linear-gradient(135deg, rgba(30,92,62,0.06), rgba(122,74,36,0.06)); border: 1px solid rgba(30,92,62,0.12); box-shadow: none; }
+  .rail-profile-info { min-width: 0; }
+  .rail-profile-name { font-size: 13.5px; font-weight: 600; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .rail-profile-meta { font-size: 11.5px; color: rgba(28,27,23,0.5); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .rail-card-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--secondary); margin: 0 0 12px; }
+  .rail-stat-row { display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: rgba(28,27,23,0.65); padding: 6px 0; }
+  .rail-stat-row b { color: var(--ink); font-family: 'IBM Plex Mono', monospace; font-size: 13px; }
+  .rail-link {
+    width: 100%; display: flex; align-items: center; gap: 10px;
+    background: none; border: none; padding: 9px 4px; cursor: pointer;
+    font-size: 13.5px; font-weight: 500; color: var(--ink); font-family: 'Inter', sans-serif;
+    border-radius: 8px; transition: background .15s;
+  }
+  .rail-link:hover { background: rgba(28,27,23,0.05); }
+  .rail-link svg { color: rgba(28,27,23,0.4); flex-shrink: 0; }
+  .rail-footnote { font-size: 11px; color: rgba(28,27,23,0.35); text-align: center; margin: 4px 0 0; }
+}
+
+.brand-kicker {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Sora', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--secondary);
+  letter-spacing: 0.02em;
+  margin-bottom: 22px;
+}
+.brand-dot {
+  width: 20px; height: 20px; border-radius: 22%;
+  object-fit: contain;
+  box-shadow: 0 0 0 4px rgba(30,92,62,0.12);
+}
+
+.screen {
+  display: none;
+  flex-direction: column;
+  flex: 1;
+  padding: 32px 24px 28px;
+  position: relative;
+}
+.screen.active { display: flex; }
+.screen.slide-fwd { animation: slideFwd .38s cubic-bezier(.22,1,.36,1); }
+.screen.slide-back { animation: slideBack .38s cubic-bezier(.22,1,.36,1); }
+@keyframes slideFwd { from { opacity: 0; transform: translateX(22px); } to { opacity: 1; transform: translateX(0); } }
+@keyframes slideBack { from { opacity: 0; transform: translateX(-22px); } to { opacity: 1; transform: translateX(0); } }
+
+.progress-track {
+  height: 6px;
+  border-radius: 3px;
+  background: var(--line);
+  overflow: hidden;
+  margin-bottom: 20px;
+  position: relative;
+}
+.progress-fill {
+  height: 100%;
+  width: 33%;
+  border-radius: 3px;
+  background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+  transition: width .5s cubic-bezier(.4,0,.2,1);
+  position: relative;
+  overflow: hidden;
+}
+.progress-fill::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+  animation: progressSheen 1.8s ease-in-out infinite;
+}
+@keyframes progressSheen { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
+
+.btn-back {
+  position: absolute;
+  top: 18px;
+  left: 16px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(28,27,23,0.05);
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 2;
+  transition: background .15s, transform .15s;
+}
+.btn-back:hover { background: rgba(28,27,23,0.1); transform: translateX(-2px); }
+.btn-back + .progress-track { margin-top: 40px; }
+.btn-back + .step-indicator { margin-top: 40px; }
+
+/* ---------- First-time coach-mark tour ---------- */
+.tour-overlay {
+  position: fixed; inset: 0; background: rgba(20,24,22,0.55);
+  z-index: 90; animation: fieldRise .25s ease;
+}
+.tour-highlight {
+  position: relative; z-index: 91;
+  box-shadow: 0 0 0 6px rgba(255,255,255,0.95), 0 0 0 9px rgba(30,92,62,0.5);
+  border-radius: 14px;
+  animation: tourPulse 1.4s ease-in-out infinite;
+}
+@keyframes tourPulse {
+  0%, 100% { box-shadow: 0 0 0 6px rgba(255,255,255,0.95), 0 0 0 9px rgba(30,92,62,0.5); }
+  50% { box-shadow: 0 0 0 6px rgba(255,255,255,0.95), 0 0 0 13px rgba(30,92,62,0.25); }
+}
+.tour-tooltip {
+  position: fixed; z-index: 92;
+  background: #fff; border-radius: 16px; padding: 16px 16px 12px;
+  box-shadow: 0 12px 32px rgba(28,27,23,0.28);
+  animation: fieldRise .25s ease;
+}
+.tour-tooltip-text { font-size: 14.5px; line-height: 1.45; color: var(--ink); margin: 0 0 12px; }
+.tour-tooltip-footer { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.tour-progress { font-size: 12px; color: rgba(28,27,23,0.45); font-weight: 600; }
+.tour-tooltip-actions { display: flex; gap: 8px; }
+.tour-btn {
+  border: none; border-radius: 10px; padding: 7px 14px; font-size: 13.5px; font-weight: 600;
+  cursor: pointer; font-family: 'Inter', sans-serif;
+}
+.tour-skip { background: none; color: rgba(28,27,23,0.5); }
+.tour-skip:hover { color: var(--ink); }
+.tour-btn-primary { background: var(--primary); color: #fff; }
+.tour-btn-primary:hover { background: var(--primary-dark); }
+/* Little pointer triangle on the tooltip, flips depending on which side it sits */
+.tour-tooltip::before {
+  content: ""; position: absolute; left: 24px;
+  width: 12px; height: 12px; background: #fff;
+  transform: rotate(45deg);
+}
+.tour-tooltip:not(.tour-tooltip-above)::before { top: -6px; }
+.tour-tooltip.tour-tooltip-above::before { bottom: -6px; }
+

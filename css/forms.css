@@ -1,0 +1,303 @@
+/* ============================================================
+   forms.css
+   Every form input style: the header/back-button row, the username field, OTP boxes, buttons, password field, small animations (shake/ripple/stagger), avatar upload, autocomplete, and the department-picker modal.
+   ============================================================ */
+
+/* Header row where a back button sits beside a centered brand name —
+   grid keeps the name truly centered instead of hugging the button. */
+.screen-topbar { display: flex; align-items: center; margin-bottom: 26px; }
+.btn-back-inline { position: static; }
+.brand-kicker-center { flex: 1; justify-content: center; margin-bottom: 0; }
+.screen-topbar-spacer { width: 36px; flex-shrink: 0; }
+
+.eyebrow {
+  font-size: 13px;
+  color: var(--secondary);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 6px;
+}
+
+h2.display { font-size: 25px; margin-bottom: 4px; }
+.subtitle { color: rgba(28,27,23,0.6); font-size: 14px; margin-bottom: 24px; }
+.hint { font-size: 12px; color: rgba(28,27,23,0.45); margin-top: 8px; }
+
+.field { margin-bottom: 16px; position: relative; }
+.field label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: var(--ink);
+}
+.field input, .field select {
+  width: 100%;
+  padding: 13px 14px;
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  font-size: 15px;
+  font-family: inherit;
+  color: var(--ink);
+  outline: none;
+  transition: border-color .15s, box-shadow .15s;
+}
+.field input:focus, .field select:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px rgba(30,92,62,0.1);
+}
+.field .error { font-size: 12px; color: var(--accent-red); margin-top: 4px; display: none; }
+.field.has-error input { border-color: var(--accent-red); }
+.field.has-error .error { display: block; }
+
+/* Username input */
+.username-field {
+  display: flex;
+  gap: 8px;
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  padding: 10px 12px;
+  align-items: center;
+  transition: border-color .2s, box-shadow .3s;
+  position: relative;
+}
+.username-field:focus-within { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(30,92,62,0.1); }
+.username-field.valid { border-color: var(--primary); background: rgba(30,92,62,0.04); }
+.username-field input {
+  border: none;
+  background: transparent;
+  padding: 4px 2px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 15px;
+  outline: none;
+  min-width: 0;
+  flex: 1;
+  color: var(--ink);
+}
+
+.select-wrap-full { flex: 1; width: 100%; background: var(--surface); border: 1.5px solid var(--line); border-radius: var(--radius); padding: 0 14px; }
+.select-wrap-full::after { margin-left: auto; }
+.select-wrap-full select {
+  width: 100%; padding: 13px 0;
+  font-family: 'Inter', sans-serif; font-weight: 400; color: var(--ink);
+  appearance: none; -webkit-appearance: none; -moz-appearance: none;
+  border: none; outline: none; background: transparent; box-shadow: none;
+}
+.select-wrap-full:focus-within { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(30,92,62,0.1); }
+
+.username-check {
+  flex-shrink: 0;
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: var(--primary);
+  padding: 2px;
+  opacity: 0;
+  transform: scale(0.4);
+  transition: opacity .25s, transform .3s cubic-bezier(.34,1.56,.64,1);
+}
+.username-field.valid .username-check { opacity: 1; transform: scale(1); }
+
+.username-hint {
+  margin-top: 8px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12.5px;
+  color: rgba(28,27,23,0.45);
+  padding: 0 2px;
+  transition: color .2s;
+}
+.username-hint.taken { color: #C1432E; }
+.username-hint.ok { color: var(--primary); }
+
+/* OTP */
+.otp-row { display: flex; gap: 8px; justify-content: space-between; margin-bottom: 8px; }
+.otp-row input {
+  width: 44px; height: 54px;
+  text-align: center;
+  font-size: 20px;
+  font-family: 'IBM Plex Mono', monospace;
+  border: 1.5px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface);
+  outline: none;
+  transition: border-color .15s, box-shadow .15s, transform .15s;
+}
+.otp-row input:focus { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(30,92,62,0.1); transform: translateY(-1px); }
+.otp-row.checking input { border-color: var(--primary); animation: otpPulse 1s ease-in-out infinite; }
+@keyframes otpPulse { 0%,100% { box-shadow: 0 0 0 0 rgba(30,92,62,0.25); } 50% { box-shadow: 0 0 0 6px rgba(30,92,62,0); } }
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 14px 20px;
+  border-radius: var(--radius);
+  font-size: 15px;
+  font-weight: 600;
+  font-family: inherit;
+  border: none;
+  cursor: pointer;
+  transition: transform .12s ease, box-shadow .2s, background .15s;
+  position: relative;
+  overflow: hidden;
+}
+.btn:active { transform: scale(0.98); }
+.btn-primary { background: var(--primary); color: #fff; box-shadow: 0 4px 14px rgba(30,92,62,0.25); }
+.btn-primary:hover:not(:disabled) { background: var(--primary-dark); box-shadow: 0 6px 18px rgba(30,92,62,0.32); transform: translateY(-1px); }
+.btn-primary:disabled { background: rgba(28,27,23,0.1); color: rgba(28,27,23,0.35); cursor: not-allowed; box-shadow: none; }
+.btn-ghost { background: transparent; color: var(--primary); font-weight: 600; padding: 10px; width: auto; }
+.btn-outline { background: transparent; color: var(--ink); border: 1px solid var(--line); }
+
+.link-row { text-align: center; margin-top: 16px; font-size: 14px; color: rgba(28,27,23,0.6); }
+.link-row a { color: var(--primary); font-weight: 600; text-decoration: none; }
+
+.spacer { flex: 1; }
+
+.toast {
+  position: fixed;
+  bottom: 20px; left: 50%;
+  transform: translateX(-50%) translateY(80px);
+  background: var(--ink);
+  color: #fff;
+  padding: 12px 20px;
+  border-radius: 10px;
+  font-size: 14px;
+  box-shadow: var(--shadow-lg);
+  transition: transform .25s ease;
+  z-index: 200;
+  max-width: 90%;
+  text-align: center;
+}
+.toast.error { background: var(--accent-red); }
+.toast.show { transform: translateX(-50%) translateY(0); }
+
+/* Password */
+.btn-primary:disabled,
+.btn-primary.is-invalid { background: rgba(28,27,23,0.1); color: rgba(28,27,23,0.35); box-shadow: none; }
+.btn-primary.is-invalid:hover { background: rgba(28,27,23,0.14); box-shadow: none; transform: none; }
+.btn-ghost:disabled { color: rgba(28,27,23,0.32); cursor: not-allowed; }
+
+/* Shake — draws attention to what's missing when tapping an invalid submit */
+.shake-error { animation: shakeX .38s cubic-bezier(.36,.07,.19,.97); }
+@keyframes shakeX {
+  10%, 90% { transform: translateX(-1px); }
+  20%, 80% { transform: translateX(2px); }
+  30%, 50%, 70% { transform: translateX(-4px); }
+  40%, 60% { transform: translateX(4px); }
+}
+
+/* Ripple on primary button tap */
+.btn-ripple { position: absolute; border-radius: 50%; background: rgba(255,255,255,0.5); transform: scale(0); animation: rippleOut .55s ease-out; pointer-events: none; }
+@keyframes rippleOut { to { transform: scale(2.6); opacity: 0; } }
+
+/* Staggered field entrance on step transition */
+.screen.slide-fwd .field,
+.screen.slide-fwd .avatar-picker { animation: fieldRise .5s cubic-bezier(.22,1,.36,1) backwards; }
+.screen.slide-fwd .field:nth-of-type(1), .screen.slide-fwd .avatar-picker { animation-delay: .04s; }
+.screen.slide-fwd .field:nth-of-type(2) { animation-delay: .09s; }
+.screen.slide-fwd .field:nth-of-type(3) { animation-delay: .14s; }
+.screen.slide-fwd .field:nth-of-type(4) { animation-delay: .19s; }
+.screen.slide-fwd .field:nth-of-type(5) { animation-delay: .24s; }
+@keyframes fieldRise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+.pw-wrap { position: relative; }
+.pw-wrap input { padding-right: 42px; }
+.pw-toggle {
+  position: absolute; right: 6px; top: 50%; transform: translateY(-50%);
+  width: 32px; height: 32px; border: none; background: transparent;
+  color: rgba(28,27,23,0.4); cursor: pointer;
+  display: flex; align-items: center; justify-content: center; border-radius: 6px;
+}
+.pw-toggle:hover { background: rgba(28,27,23,0.06); color: var(--ink); }
+.pw-toggle.active { color: var(--primary); }
+
+.pw-requirements { list-style: none; margin: 10px 0 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 6px 10px; }
+.pw-requirements li { display: flex; align-items: center; gap: 7px; font-size: 12.5px; color: rgba(28,27,23,0.45); transition: color .2s; }
+.rule-dot { width: 15px; height: 15px; border-radius: 50%; border: 1.5px solid rgba(28,27,23,0.25); flex-shrink: 0; position: relative; transition: border-color .2s, background .2s, transform .25s; }
+.pw-requirements li.met { color: var(--primary); }
+.pw-requirements li.met .rule-dot { background: var(--primary); border-color: var(--primary); transform: scale(1.1); }
+.pw-requirements li.met .rule-dot::after { content: ''; position: absolute; left: 4px; top: 1px; width: 4px; height: 8px; border-right: 1.5px solid #fff; border-bottom: 1.5px solid #fff; transform: rotate(40deg); }
+
+/* Avatar upload */
+.avatar-picker {
+  width: 88px; height: 88px;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 1.5px dashed var(--line);
+  display: flex; align-items: center; justify-content: center;
+  margin: 4px auto 20px;
+  color: rgba(28,27,23,0.4);
+  font-size: 12px; text-align: center;
+  cursor: pointer;
+  overflow: hidden;
+  transition: border-color .2s, transform .15s;
+}
+.avatar-picker:hover { border-color: var(--primary); transform: scale(1.03); }
+.avatar-picker img { width: 100%; height: 100%; object-fit: cover; }
+
+/* Autocomplete */
+.autocomplete-field { position: relative; }
+.suggestions {
+  position: absolute;
+  left: 0; right: 0; top: calc(100% + 4px);
+  background: var(--surface);
+  border-radius: 12px;
+  box-shadow: var(--shadow-lg);
+  max-height: 220px;
+  overflow-y: auto;
+  z-index: 20;
+  display: none;
+  border: 1px solid var(--line);
+}
+.suggestions.show { display: block; animation: fadeDown .18s ease; }
+@keyframes fadeDown { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
+.suggestion-item { padding: 11px 14px; font-size: 14px; cursor: pointer; transition: background .1s; }
+.suggestion-item:hover, .suggestion-item.highlighted { background: rgba(30,92,62,0.08); }
+.suggestion-empty { padding: 12px 14px; font-size: 13px; color: rgba(28,27,23,0.4); }
+
+.dept-chip-wrap { display: flex; gap: 8px; align-items: center; }
+.dept-chip-wrap input { background: rgba(30,92,62,0.05); color: var(--primary); font-weight: 600; }
+.dept-change-btn { flex-shrink: 0; background: transparent; border: 1.5px solid var(--line); border-radius: 10px; padding: 12px 14px; font-size: 13px; font-weight: 600; cursor: pointer; color: var(--ink); }
+.dept-change-btn:hover { border-color: var(--primary); color: var(--primary); }
+
+/* Department modal */
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(18,20,18,0.42);
+  backdrop-filter: blur(3px);
+  display: none;
+  align-items: flex-end;
+  justify-content: center;
+  z-index: 100;
+}
+.modal-overlay.show { display: flex; animation: overlayIn .2s ease; }
+@keyframes overlayIn { from { opacity: 0; } to { opacity: 1; } }
+.modal-card {
+  background: var(--surface);
+  width: 100%; max-width: 480px;
+  border-radius: 22px 22px 0 0;
+  padding: 24px 22px 28px;
+  box-shadow: var(--shadow-lg);
+  animation: modalUp .32s cubic-bezier(.22,1,.36,1);
+  max-height: 72vh;
+  display: flex;
+  flex-direction: column;
+}
+@keyframes modalUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+.modal-sub { font-size: 13px; color: rgba(28,27,23,0.55); margin: 2px 0 16px; }
+.modal-card input {
+  width: 100%; padding: 12px 14px; border: 1.5px solid var(--line);
+  border-radius: 12px; font-size: 15px; outline: none; margin-bottom: 12px;
+}
+.modal-card input:focus { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(30,92,62,0.1); }
+.modal-list { overflow-y: auto; flex: 1; margin-bottom: 12px; }
+.modal-list .suggestion-item { border-radius: 10px; }
+
+@media (min-width: 900px) {
+  .modal-overlay { align-items: center; }
+  .modal-card { border-radius: 20px; max-width: 380px; }
+  @keyframes modalUp { from { transform: translateY(16px) scale(.97); opacity: 0; } to { transform: translateY(0) scale(1); opacity: 1; } }
+}
+

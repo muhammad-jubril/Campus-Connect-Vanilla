@@ -1,0 +1,165 @@
+/* ============================================================
+   screens.css
+   The welcome/landing screen (with its floating icon animation), the post-signup welcome screen, the profile page's top bar, the Settings screen, and the signup step indicator.
+   ============================================================ */
+
+/* ---------- Welcome / landing screen ---------- */
+.welcome-wrap { display: flex; flex-direction: column; flex: 1; text-align: center; align-items: center; padding-top: 12px; position: relative; z-index: 2; }
+
+/* Floating campus-life icons drifting gently behind the content — the
+   "this app is alive" touch that a static gradient background can't give. */
+.welcome-float-icons { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 1; }
+.wf-icon { position: absolute; color: var(--primary); opacity: 0; animation: wfFloat 7s ease-in-out infinite; }
+.wf-icon-1 { top: 12%; left: 10%; color: var(--primary); animation-delay: .3s; }
+.wf-icon-2 { top: 20%; right: 12%; color: var(--secondary); animation-delay: 1.4s; }
+.wf-icon-3 { top: 58%; left: 7%; color: var(--accent-red); animation-delay: 2.5s; }
+.wf-icon-4 { top: 66%; right: 9%; color: var(--accent-red); animation-delay: .9s; }
+.wf-icon-5 { top: 40%; right: 20%; color: var(--secondary); animation-delay: 3.4s; }
+@keyframes wfFloat {
+  0% { opacity: 0; transform: translateY(14px) rotate(-6deg) scale(.8); }
+  12% { opacity: .16; }
+  50% { opacity: .22; transform: translateY(-10px) rotate(4deg) scale(1); }
+  88% { opacity: .12; }
+  100% { opacity: 0; transform: translateY(-24px) rotate(8deg) scale(.85); }
+}
+
+.welcome-mark { margin-bottom: 22px; position: relative; animation: markPop .7s cubic-bezier(.34,1.56,.64,1) backwards; }
+.welcome-halo {
+  position: absolute; inset: -16px; border-radius: 50%;
+  background: conic-gradient(from 0deg, var(--primary), var(--accent-red), var(--secondary), var(--primary));
+  opacity: 0.16; filter: blur(2px);
+  animation: haloSpin 8s linear infinite;
+}
+@keyframes haloSpin { to { transform: rotate(360deg); } }
+@keyframes markPop { from { opacity: 0; transform: scale(.3) rotate(-25deg); } to { opacity: 1; transform: scale(1) rotate(0); } }
+.brand-dot-lg {
+  width: 46px; height: 46px; position: relative;
+  object-fit: contain; border-radius: 22%;
+  box-shadow: 0 0 0 8px rgba(30,92,62,0.1);
+}
+.welcome-title { font-family: 'Sora', sans-serif; font-weight: 800; font-size: 30px; line-height: 1.22; color: var(--ink); margin-bottom: 12px; }
+.welcome-title-line { display: block; opacity: 0; animation: titleSlide .6s cubic-bezier(.22,1,.36,1) .18s forwards; }
+.welcome-title-line.welcome-title-shine {
+  animation-delay: .3s;
+  background: linear-gradient(100deg, var(--ink) 40%, var(--primary) 50%, var(--ink) 60%);
+  background-size: 260% 100%;
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  animation: titleSlide .6s cubic-bezier(.22,1,.36,1) .3s forwards, titleShine 2.6s ease-in-out 1.1s 1;
+}
+@keyframes titleSlide { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes titleShine { 0% { background-position: 100% 0; } 100% { background-position: -60% 0; } }
+.welcome-subtitle {
+  font-size: 15px; font-weight: 600; color: var(--secondary); margin-bottom: 14px; position: relative; display: inline-block;
+  opacity: 0; animation: welcomeRise .6s cubic-bezier(.22,1,.36,1) .5s forwards;
+}
+.welcome-underline {
+  position: absolute; left: 50%; bottom: -5px; height: 2.5px; width: 0;
+  background: var(--accent-red); border-radius: 2px; transform: translateX(-50%);
+  animation: underlineGrow .5s ease-out .95s forwards;
+}
+@keyframes underlineGrow { to { width: 70%; } }
+.welcome-blurb {
+  font-size: 14px; line-height: 1.6; color: rgba(28,27,23,0.65); max-width: 340px;
+  opacity: 0; animation: welcomeRise .6s cubic-bezier(.22,1,.36,1) .62s forwards;
+}
+.welcome-blurb-center { max-width: 300px; margin-top: 4px; }
+.welcome-wrap .btn { opacity: 0; animation: btnPop .55s cubic-bezier(.34,1.56,.64,1) .78s forwards; }
+.welcome-wrap .btn-outline { animation-delay: .88s; margin-top: 10px; }
+@keyframes btnPop { from { opacity: 0; transform: translateY(16px) scale(.94); } to { opacity: 1; transform: translateY(0) scale(1); } }
+.welcome-btn-shine { position: relative; overflow: hidden; }
+.welcome-btn-shine::after {
+  content: ''; position: absolute; top: 0; bottom: 0; left: -60%; width: 40%;
+  background: linear-gradient(100deg, transparent, rgba(255,255,255,0.35), transparent);
+  animation: btnSheen 3.2s ease-in-out 1.6s infinite;
+}
+@keyframes btnSheen { 0% { left: -60%; } 35%, 100% { left: 130%; } }
+.welcome-legal {
+  font-size: 11.5px; color: rgba(28,27,23,0.42); margin-top: 16px; line-height: 1.5;
+  opacity: 0; animation: welcomeRise .6s cubic-bezier(.22,1,.36,1) 1s forwards;
+}
+.welcome-legal a { color: var(--secondary); font-weight: 600; text-decoration: none; }
+.welcome-legal a:hover { text-decoration: underline; }
+@keyframes welcomeRise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+
+.legal-body { font-size: 13.5px; line-height: 1.7; color: rgba(28,27,23,0.7); }
+.legal-body p { margin-bottom: 12px; }
+
+/* ---------- Post-signup welcome ---------- */
+#screen-post-signup-welcome .welcome-wrap { justify-content: center; flex: 1; }
+.welcome-check { margin-bottom: 20px; animation: welcomeCheckIn .5s cubic-bezier(.34,1.56,.64,1) backwards; }
+@keyframes welcomeCheckIn { from { opacity: 0; transform: scale(.4); } to { opacity: 1; transform: scale(1); } }
+.welcome-check-path {
+  stroke: #fff; stroke-width: 3; fill: none; stroke-linecap: round; stroke-linejoin: round;
+  stroke-dasharray: 27; stroke-dashoffset: 27;
+  animation: checkDraw .4s ease .35s forwards;
+}
+@keyframes checkDraw { to { stroke-dashoffset: 0; } }
+#screen-post-signup-welcome .welcome-title-line { animation-delay: .15s; }
+#screen-post-signup-welcome .welcome-subtitle { animation-delay: .28s; }
+#screen-post-signup-welcome .welcome-blurb { animation-delay: .4s; }
+
+/* ---------- Profile top bar / settings entry, Home top bar / chats entry ---------- */
+/* .home-topbar / .profile-topbar / .icon-btn styling now all lives in
+   premium-ui.css (a 3-column grid: hamburger | title | icon, plus the
+   frosted circular icon-button look) — these old rules were dead weight
+   that only risked fighting the newer layout if load order ever changed. */
+
+/* ---------- Settings ---------- */
+.settings-group { margin-bottom: 22px; }
+.settings-group-label {
+  font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;
+  color: rgba(28,27,23,0.4); margin-bottom: 6px; padding: 0 4px;
+}
+.settings-row {
+  width: 100%; display: flex; align-items: center; justify-content: space-between;
+  background: var(--surface); border: none; border-radius: 12px;
+  padding: 13px 14px; margin-bottom: 6px; cursor: pointer;
+  font-size: 14.5px; font-weight: 500; color: var(--ink); font-family: 'Inter', sans-serif;
+  box-shadow: var(--shadow); transition: transform .12s;
+}
+.settings-row:active { transform: scale(0.98); }
+.settings-row svg { color: rgba(28,27,23,0.3); flex-shrink: 0; }
+.settings-row-toggle { cursor: default; }
+.settings-row-static { cursor: default; color: rgba(28,27,23,0.55); }
+.settings-value { color: rgba(28,27,23,0.4); font-size: 13px; }
+.settings-row-danger { color: var(--accent-red); font-weight: 600; justify-content: center; }
+
+.toggle-switch {
+  width: 42px; height: 24px; border-radius: 999px; border: none;
+  background: rgba(28,27,23,0.15); position: relative; cursor: pointer;
+  transition: background .2s; flex-shrink: 0;
+}
+.toggle-switch.on { background: var(--primary); }
+.toggle-knob {
+  position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; border-radius: 50%;
+  background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.25);
+  transition: transform .2s cubic-bezier(.34,1.56,.64,1);
+}
+.toggle-switch.on .toggle-knob { transform: translateX(18px); }
+
+/* ---------- Step indicator ---------- */
+.step-indicator { display: flex; align-items: flex-start; margin-bottom: 28px; }
+.step-node { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; }
+.step-circle {
+  width: 30px; height: 30px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600;
+  transition: background .25s, border-color .25s, box-shadow .25s, color .25s;
+}
+.step-node.completed .step-circle { background: var(--primary); color: #fff; }
+.step-node.current .step-circle {
+  background: #fff; border: 2.5px solid var(--primary); color: var(--primary);
+  box-shadow: 0 0 0 4px rgba(30,92,62,0.16);
+  animation: stepPulse 1.8s ease-in-out infinite;
+}
+.step-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--primary); }
+.step-node.upcoming .step-circle { background: var(--surface); border: 1.5px solid rgba(28,27,23,0.16); color: rgba(28,27,23,0.35); }
+@keyframes stepPulse {
+  0%, 100% { box-shadow: 0 0 0 4px rgba(30,92,62,0.16); }
+  50% { box-shadow: 0 0 0 7px rgba(30,92,62,0.08); }
+}
+.step-label { font-size: 10.5px; font-weight: 600; margin-top: 7px; color: rgba(28,27,23,0.4); white-space: nowrap; letter-spacing: 0.01em; }
+.step-node.current .step-label { color: var(--ink); }
+.step-node.completed .step-label { color: var(--primary); }
+.step-line { flex: 1; height: 2px; background: rgba(28,27,23,0.16); margin: 14px 6px 0; transition: background .25s; }
+.step-line.completed { background: var(--primary); }
